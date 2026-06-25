@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block sidebar %}
+<ul class="nav flex-column px-2">
+  <li class="nav-item"><a class="nav-link active" href="{{ url_for('admin_dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_treks') }}"><i class="bi bi-map"></i> Treks</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_staff') }}"><i class="bi bi-person-badge"></i> Staff</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_users') }}"><i class="bi bi-people"></i> Users</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_bookings') }}"><i class="bi bi-journal-check"></i> Bookings</a></li>
+</ul>
+{% endblock %}
+{% block content %}
+<h4 class="mb-4">Admin Dashboard</h4>
+<div class="row g-3">
+  <div class="col-md-3">
+    <div class="card text-white bg-primary p-3 text-center">
+      <h2>{{ treks }}</h2><p class="mb-0">Total Treks</p>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-success p-3 text-center">
+      <h2>{{ users }}</h2><p class="mb-0">Trekkers</p>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-warning p-3 text-center">
+      <h2>{{ staff }}</h2><p class="mb-0">Staff Members</p>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-info p-3 text-center">
+      <h2>{{ bookings }}</h2><p class="mb-0">Bookings</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

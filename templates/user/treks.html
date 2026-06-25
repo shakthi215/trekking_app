@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block sidebar %}
+<ul class="nav flex-column px-2">
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('user_dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+  <li class="nav-item"><a class="nav-link active" href="{{ url_for('user_treks') }}"><i class="bi bi-map"></i> Browse Treks</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('user_profile') }}"><i class="bi bi-person"></i> Profile</a></li>
+</ul>
+{% endblock %}
+{% block content %}
+<h4 class="mb-3">Browse Treks</h4>
+<form method="GET" class="row g-2 mb-4">
+  <div class="col-md-3">
+    <input type="text" name="q" value="{{ q }}" class="form-control" placeholder="Search by name or location">
+  </div>
+  <div class="col-md-2">
+    <select name="difficulty" class="form-select">
+      <option value="">All Difficulties</option>
+      <option {% if difficulty=='Easy' %}selected{% endif %}>Easy</option>
+      <option {% if difficulty=='Moderate' %}selected{% endif %}>Moderate</option>
+      <option {% if difficulty=='Hard' %}selected{% endif %}>Hard</option>
+    </select>
+  </div>
+  <div class="col-md-2">
+    <input type="text" name="location" value="{{ location }}" class="form-control" placeholder="Filter by location">
+  </div>
+  <div class="col-md-2">
+    <button type="submit" class="btn btn-primary">Filter</button>
+    <a href="{{ url_for('user_treks') }}" class="btn btn-outline-secondary">Clear</a>
+  </div>
+</form>
+
+<div class="row g-3">
+  {% for t in treks %}
+  <div class="col-md-4">
+    <div class="card p-3 h-100">
+      <h6>{{ t.name }}</h6>
+      <p class="text-muted mb-1"><i class="bi bi-geo-alt"></i> {{ t.location }}</p>
+      <p class="mb-1">
+        <span class="badge bg-{{ 'success' if t.difficulty=='Easy' else 'warning text-dark' if t.difficulty=='Moderate' else 'danger' }}">{{ t.difficulty }}</span>
+        &nbsp;{{ t.duration }} days
+      </p>
+      <p class="mb-1">Slots: <strong>{{ t.slots }}</strong> | {{ t.start_date }} → {{ t.end_date }}</p>
+      <form method="POST" action="{{ url_for('user_book', tid=t.id) }}" class="mt-auto">
+        <button type="submit" class="btn btn-primary btn-sm" {% if t.slots <= 0 %}disabled{% endif %}>
+          {{ 'Book Now' if t.slots > 0 else 'Full' }}
+        </button>
+      </form>
+    </div>
+  </div>
+  {% else %}
+  <p class="text-muted">No open treks found.</p>
+  {% endfor %}
+</div>
+{% endblock %}

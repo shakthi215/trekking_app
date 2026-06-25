@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block sidebar %}
+<ul class="nav flex-column px-2">
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+  <li class="nav-item"><a class="nav-link active" href="{{ url_for('admin_treks') }}"><i class="bi bi-map"></i> Treks</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_staff') }}"><i class="bi bi-person-badge"></i> Staff</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_users') }}"><i class="bi bi-people"></i> Users</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_bookings') }}"><i class="bi bi-journal-check"></i> Bookings</a></li>
+</ul>
+{% endblock %}
+{% block content %}
+<h4>Edit Trek</h4>
+<div class="card p-4 mt-3" style="max-width:600px">
+  <form method="POST">
+    <div class="mb-3"><label class="form-label">Name</label>
+      <input type="text" name="name" class="form-control" value="{{ trek.name }}" required></div>
+    <div class="mb-3"><label class="form-label">Location</label>
+      <input type="text" name="location" class="form-control" value="{{ trek.location }}"></div>
+    <div class="mb-3"><label class="form-label">Difficulty</label>
+      <select name="difficulty" class="form-select">
+        <option {% if trek.difficulty=='Easy' %}selected{% endif %}>Easy</option>
+        <option {% if trek.difficulty=='Moderate' %}selected{% endif %}>Moderate</option>
+        <option {% if trek.difficulty=='Hard' %}selected{% endif %}>Hard</option>
+      </select></div>
+    <div class="row">
+      <div class="col mb-3"><label class="form-label">Duration (days)</label>
+        <input type="number" name="duration" class="form-control" value="{{ trek.duration }}"></div>
+      <div class="col mb-3"><label class="form-label">Available Slots</label>
+        <input type="number" name="slots" class="form-control" value="{{ trek.slots }}"></div>
+    </div>
+    <div class="row">
+      <div class="col mb-3"><label class="form-label">Start Date</label>
+        <input type="date" name="start_date" class="form-control" value="{{ trek.start_date }}"></div>
+      <div class="col mb-3"><label class="form-label">End Date</label>
+        <input type="date" name="end_date" class="form-control" value="{{ trek.end_date }}"></div>
+    </div>
+    <div class="mb-3"><label class="form-label">Status</label>
+      <select name="status" class="form-select">
+        {% for s in ['Pending','Approved','Open','Closed','Completed'] %}
+        <option {% if trek.status==s %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select></div>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a href="{{ url_for('admin_treks') }}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock %}

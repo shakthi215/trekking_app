@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block sidebar %}
+<ul class="nav flex-column px-2">
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('staff_dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+</ul>
+{% endblock %}
+{% block content %}
+<h4>{{ trek.name }}</h4>
+<p class="text-muted">{{ trek.location }} | {{ trek.difficulty }} | {{ trek.duration }} days</p>
+
+<div class="card p-3 mb-4" style="max-width:400px">
+  <h6>Update Trek</h6>
+  <form method="POST">
+    <div class="mb-2">
+      <label class="form-label">Available Slots</label>
+      <input type="number" name="slots" class="form-control" value="{{ trek.slots }}" min="0" required>
+    </div>
+    <div class="mb-2">
+      <label class="form-label">Status</label>
+      <select name="status" class="form-select">
+        {% for s in ['Approved','Open','Closed','Completed'] %}
+        <option {% if trek.status==s %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary btn-sm">Update</button>
+  </form>
+</div>
+
+<h6>Registered Participants ({{ participants|length }})</h6>
+<div class="card">
+  <table class="table table-sm mb-0">
+    <thead class="table-light">
+      <tr><th>Name</th><th>Email</th><th>Phone</th><th>Booked On</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      {% for p in participants %}
+      <tr>
+        <td>{{ p.name }}</td><td>{{ p.email }}</td><td>{{ p.phone }}</td>
+        <td>{{ p.booking_date }}</td>
+        <td><span class="badge bg-{{ 'success' if p.status=='Booked' else 'secondary' }}">{{ p.status }}</span></td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5" class="text-center text-muted">No participants yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

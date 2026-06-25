@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block sidebar %}
+<ul class="nav flex-column px-2">
+  <li class="nav-item"><a class="nav-link active" href="{{ url_for('staff_dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+</ul>
+{% endblock %}
+{% block content %}
+<h4 class="mb-4">Staff Dashboard</h4>
+{% if treks %}
+<div class="row g-3">
+  {% for t in treks %}
+  <div class="col-md-4">
+    <div class="card p-3">
+      <h6>{{ t.name }}</h6>
+      <p class="text-muted mb-1"><i class="bi bi-geo-alt"></i> {{ t.location }}</p>
+      <p class="mb-1">Slots: <strong>{{ t.slots }}</strong> | Status: <span class="badge bg-info">{{ t.status }}</span></p>
+      <a href="{{ url_for('staff_trek', tid=t.id) }}" class="btn btn-sm btn-primary mt-2">Manage</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">No treks assigned yet. Please wait for admin to assign a trek.</div>
+{% endif %}
+{% endblock %}
