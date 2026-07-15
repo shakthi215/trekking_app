@@ -17,45 +17,9 @@ No JavaScript is used for any core feature. No external database server is requi
 
 ---
 
-## Project Structure
-
-```
-trekking_app/
-├── app.py              # All Flask routes and business logic
-├── database.py         # DB initialisation, get_db(), close_db()
-├── requirements.txt    # Python dependencies (Flask only)
-├── trekking.db         # Auto-created on first run (do not commit)
-└── templates/
-    ├── base.html           # Shared sidebar layout
-    ├── login.html
-    ├── register.html
-    ├── admin/
-    │   ├── dashboard.html  # Stats overview
-    │   ├── treks.html      # Add / search / assign / delete treks
-    │   ├── edit_trek.html  # Edit trek details
-    │   ├── staff.html      # Approve / blacklist staff
-    │   ├── users.html      # View / blacklist users
-    │   └── bookings.html   # View all bookings
-    ├── staff/
-    │   ├── dashboard.html  # Assigned treks list
-    │   └── trek.html       # Update slots/status, view participants
-    └── user/
-        ├── dashboard.html  # Available treks + my bookings
-        ├── treks.html      # Browse / search / filter / book treks
-        └── profile.html    # Edit profile
-```
-
----
-
 ## Setup Instructions
 
-### Step 1 — Extract the zip
-```
-unzip trekking_app.zip
-cd trekking_app
-```
-
-### Step 2 — Create a virtual environment
+### Step 1 — Create a virtual environment
 ```
 python -m venv venv
 
@@ -66,17 +30,17 @@ venv\Scripts\activate
 source venv/bin/activate
 ```
 
-### Step 3 — Install dependencies
+### Step 2 — Install dependencies
 ```
 pip install -r requirements.txt
 ```
 
-### Step 4 — Run the application
+### Step 3 — Run the application
 ```
 python app.py
 ```
 
-### Step 5 — Open in browser
+### Step 4 — Open in browser
 ```
 http://127.0.0.1:5000
 ```
