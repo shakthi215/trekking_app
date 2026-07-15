@@ -287,6 +287,10 @@ def staff_dashboard(active='dashboard'):
 @app.route('/staff/treks')
 @login_required('staff')
 def staff_treks():
+    db = get_db()
+    trek = db.execute('SELECT id FROM treks WHERE staff_id=? ORDER BY id LIMIT 1', (session['user_id'],)).fetchone()
+    if trek:
+        return redirect(url_for('staff_trek', tid=trek['id']))
     return staff_dashboard('treks')
 
 @app.route('/staff/trek/<int:tid>', methods=['GET', 'POST'])
@@ -308,7 +312,8 @@ def staff_trek(tid):
                                  FROM bookings b JOIN users u ON b.user_id=u.id
                                  WHERE b.trek_id=?''', (tid,)).fetchall()
     trek = db.execute('SELECT * FROM treks WHERE id=?', (tid,)).fetchone()
-    return render_template('staff/trek.html', trek=trek, participants=participants)
+    booked_count = db.execute('SELECT COUNT(*) c FROM bookings WHERE trek_id=? AND status="Booked"', (tid,)).fetchone()['c']
+    return render_template('staff/trek.html', trek=trek, participants=participants, total_slots=trek['slots'] + booked_count)
 
 @app.route('/staff/participants')
 @login_required('staff')

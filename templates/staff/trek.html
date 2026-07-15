@@ -8,26 +8,29 @@
 </ul>
 {% endblock %}
 {% block content %}
-<h4 class="mb-3">{{ trek.name }}</h4>
-<div class="card p-3 mb-3">
-  <h6>Trek Information</h6>
-  <form method="POST" class="row">
-    <div class="col-md-6">
-      <p><strong>Location</strong> <span class="ms-5">{{ trek.location }}</span></p>
-      <p><strong>Duration</strong> <span class="ms-5">{{ trek.duration }} days</span></p>
-      <p><strong>Start Date</strong> <span class="ms-4">{{ trek.start_date }}</span></p>
-      <p><strong>End Date</strong> <span class="ms-4">{{ trek.end_date }}</span></p>
-    </div>
-    <div class="col-md-6">
-      <p><strong>Total Slots</strong> <span class="ms-5">{{ trek.slots }}</span></p>
-      <div class="mb-2 row"><label class="col-sm-4 col-form-label">Available Slots</label><div class="col-sm-8"><input type="number" name="slots" class="form-control" value="{{ trek.slots }}" min="0" required></div></div>
-      <div class="mb-2 row"><label class="col-sm-4 col-form-label">Status</label><div class="col-sm-8"><select name="status" class="form-select">{% for s in ['Approved','Open','Started','Closed','Completed'] %}<option {% if trek.status==s %}selected{% endif %}>{{ s }}</option>{% endfor %}</select></div></div>
-      <button class="btn btn-sm btn-primary">Save</button>
+<h4 class="mb-2">{{ trek.name }}</h4>
+
+<div class="card p-3 mb-2">
+  <h6 class="fw-bold mb-3">Trek Information</h6>
+  <form method="POST" id="trekUpdateForm">
+    <div class="row align-items-start">
+      <div class="col-md-6">
+        <div class="row mb-2"><div class="col-4 fw-semibold">Location</div><div class="col-8">{{ trek.location }}</div></div>
+        <div class="row mb-2"><div class="col-4 fw-semibold">Duration</div><div class="col-8">{{ trek.duration }} days</div></div>
+        <div class="row mb-2"><div class="col-4 fw-semibold">Start Date</div><div class="col-8">{{ trek.start_date }}</div></div>
+        <div class="row mb-0"><div class="col-4 fw-semibold">End Date</div><div class="col-8">{{ trek.end_date }}</div></div>
+      </div>
+      <div class="col-md-5 ms-auto">
+        <div class="row mb-2 align-items-center"><label class="col-5 fw-semibold">Total Slots</label><div class="col-7">{{ total_slots }}</div></div>
+        <div class="row mb-2 align-items-center"><label class="col-5 fw-semibold">Available Slots</label><div class="col-7"><input type="number" name="slots" class="form-control" value="{{ trek.slots }}" min="0" required></div></div>
+        <div class="row align-items-center"><label class="col-5 fw-semibold">Status</label><div class="col-7"><select name="status" class="form-select">{% for s in ['Approved','Open','Started','Closed','Completed'] %}<option {% if trek.status==s %}selected{% endif %}>{{ s }}</option>{% endfor %}</select></div></div>
+      </div>
     </div>
   </form>
 </div>
-<h6>Participants ({{ participants|length }})</h6>
-<div class="card table-responsive mb-3">
+
+<h6 class="fw-bold mb-1">Participants ({{ participants|length }})</h6>
+<div class="card table-responsive mb-4">
   <table class="table table-bordered table-sm mb-0">
     <thead class="table-light"><tr><th>User Name</th><th>Email</th><th>Booking Date</th><th>Status</th></tr></thead>
     <tbody>
@@ -39,12 +42,15 @@
     </tbody>
   </table>
 </div>
+
 <form method="POST" class="d-inline">
-  <input type="hidden" name="slots" value="{{ trek.slots }}"><input type="hidden" name="status" value="Started">
-  <button class="btn btn-outline-primary">Mark as Started</button>
+  <input type="hidden" name="slots" value="{{ trek.slots }}">
+  <input type="hidden" name="status" value="Started">
+  <button class="btn btn-outline-primary px-4">Mark as Started</button>
 </form>
-<form method="POST" class="d-inline ms-3">
-  <input type="hidden" name="slots" value="{{ trek.slots }}"><input type="hidden" name="status" value="Completed">
-  <button class="btn btn-outline-success">Mark as Completed</button>
+<form method="POST" class="d-inline ms-4">
+  <input type="hidden" name="slots" value="{{ trek.slots }}">
+  <input type="hidden" name="status" value="Completed">
+  <button class="btn btn-outline-success px-4">Mark as Completed</button>
 </form>
 {% endblock %}
