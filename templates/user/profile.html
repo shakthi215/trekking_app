@@ -3,6 +3,8 @@
 <ul class="nav flex-column px-2">
   <li class="nav-item"><a class="nav-link" href="{{ url_for('user_dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
   <li class="nav-item"><a class="nav-link" href="{{ url_for('user_treks') }}"><i class="bi bi-map"></i> Browse Treks</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('user_bookings') }}"><i class="bi bi-journal-check"></i> My Bookings</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('user_history') }}"><i class="bi bi-clock-history"></i> History</a></li>
   <li class="nav-item"><a class="nav-link active" href="{{ url_for('user_profile') }}"><i class="bi bi-person"></i> Profile</a></li>
 </ul>
 {% endblock %}
@@ -20,7 +22,7 @@
     </div>
     <div class="mb-3">
       <label class="form-label">Phone</label>
-      <input type="text" name="phone" class="form-control" value="{{ user.phone }}">
+      <input type="tel" name="phone" class="form-control" value="{{ user.phone }}" maxlength="10" pattern="[0-9]{10}" title="Enter 10 digit phone number">
     </div>
     <div class="mb-3">
       <label class="form-label">Username</label>

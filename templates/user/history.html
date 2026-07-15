@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block sidebar %}
+<ul class="nav flex-column px-2">
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('user_dashboard') }}"><i class="bi bi-house"></i> Dashboard</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('user_treks') }}"><i class="bi bi-map"></i> Browse Treks</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('user_bookings') }}"><i class="bi bi-journal-check"></i> My Bookings</a></li>
+  <li class="nav-item"><a class="nav-link active" href="{{ url_for('user_history') }}"><i class="bi bi-clock-history"></i> History</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('user_profile') }}"><i class="bi bi-person"></i> Profile</a></li>
+</ul>
+{% endblock %}
+{% block content %}
+<h4 class="mb-4">Trekking History</h4>
+<div class="card table-responsive">
+  <table class="table table-bordered mb-0">
+    <thead class="table-light"><tr><th>Trek Name</th><th>Trek Dates</th><th>Completed On</th><th>Status</th></tr></thead>
+    <tbody>
+      {% for b in bookings %}
+      <tr><td>{{ b.trek_name }}</td><td>{{ b.start_date }} to {{ b.end_date }}</td><td>{{ b.end_date }}</td><td>{{ b.status }}</td></tr>
+      {% else %}
+      <tr><td colspan="4" class="text-center text-muted">No completed treks yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

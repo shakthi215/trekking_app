@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block sidebar %}
+<ul class="nav flex-column px-2">
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_dashboard') }}"><i class="bi bi-house"></i> Dashboard</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_treks') }}"><i class="bi bi-map"></i> Treks</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_staff') }}"><i class="bi bi-person-badge"></i> Staff</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_users') }}"><i class="bi bi-people"></i> Users</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_bookings') }}"><i class="bi bi-journal-check"></i> Bookings</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_search') }}"><i class="bi bi-search"></i> Search</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_reports') }}"><i class="bi bi-file-earmark-text"></i> Reports</a></li>
+  <li class="nav-item"><a class="nav-link active" href="{{ url_for('admin_settings') }}"><i class="bi bi-gear"></i> Settings</a></li>
+</ul>
+{% endblock %}
+{% block content %}
+<h4 class="mb-3">Settings</h4>
+<div class="row g-3">
+  <div class="col-md-4">
+    <div class="card p-3">
+      <h6>Admin Profile</h6>
+      <p class="mb-1"><strong>Name:</strong> {{ admin.name }}</p>
+      <p class="mb-1"><strong>Username:</strong> {{ admin.username }}</p>
+      <p class="mb-1"><strong>Role:</strong> {{ admin.role|capitalize }}</p>
+      <p class="mb-0"><strong>Email:</strong> {{ admin.email or '-' }}</p>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card p-3">
+      <h6>Role Summary</h6>
+      <p class="mb-1">Admins: <strong>{{ counts.get('admin',0) }}</strong></p>
+      <p class="mb-1">Staff: <strong>{{ counts.get('staff',0) }}</strong></p>
+      <p class="mb-0">Users: <strong>{{ counts.get('user',0) }}</strong></p>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card p-3">
+      <h6>Trek Status</h6>
+      {% for key, value in trek_status.items() %}
+      <p class="mb-1">{{ key }}: <strong>{{ value }}</strong></p>
+      {% else %}
+      <p class="text-muted mb-0">No treks yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<div class="card p-3 mt-3">
+  <h6>Project Rules</h6>
+  <div class="row">
+    <div class="col-md-4">Database: <strong>SQLite</strong></div>
+    <div class="col-md-4">Frontend: <strong>Jinja2 + Bootstrap</strong></div>
+    <div class="col-md-4">Booking Rule: <strong>Only Open treks</strong></div>
+  </div>
+</div>
+{% endblock %}

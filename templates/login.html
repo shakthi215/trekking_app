@@ -13,6 +13,10 @@
           <label class="form-label">Password</label>
           <input type="password" name="password" class="form-control" required>
         </div>
+        <div class="mb-3 form-check">
+          <input type="checkbox" name="remember" class="form-check-input" id="rememberMe">
+          <label class="form-check-label" for="rememberMe">Remember me</label>
+        </div>
         <button type="submit" class="btn btn-primary w-100">Login</button>
       </form>
       <p class="text-center mt-3 mb-0">New here? <a href="{{ url_for('register') }}">Register</a></p>

@@ -13,6 +13,12 @@ def get_db():
 
 def init_db():
     if os.path.exists(DATABASE):
+        conn = sqlite3.connect(DATABASE)
+        cols = [r[1] for r in conn.execute('PRAGMA table_info(treks)')]
+        if 'description' not in cols:
+            conn.execute('ALTER TABLE treks ADD COLUMN description TEXT DEFAULT ""')
+            conn.commit()
+        conn.close()
         return
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
@@ -38,7 +44,8 @@ def init_db():
             staff_id INTEGER REFERENCES users(id),
             status TEXT DEFAULT "Pending",
             start_date TEXT,
-            end_date TEXT
+            end_date TEXT,
+            description TEXT DEFAULT ""
         );
 
         CREATE TABLE IF NOT EXISTS bookings (

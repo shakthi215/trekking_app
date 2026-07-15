@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block sidebar %}
+<ul class="nav flex-column px-2">
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('staff_dashboard') }}"><i class="bi bi-house"></i> Dashboard</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('staff_treks') }}"><i class="bi bi-map"></i> My Treks</a></li>
+  <li class="nav-item"><a class="nav-link active" href="{{ url_for('staff_participants') }}"><i class="bi bi-people"></i> Participants</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('staff_profile') }}"><i class="bi bi-person"></i> Profile</a></li>
+</ul>
+{% endblock %}
+{% block content %}
+<h4 class="mb-3">Participants</h4>
+<div class="card table-responsive">
+  <table class="table table-bordered mb-0">
+    <thead class="table-light"><tr><th>Trek</th><th>Name</th><th>Email</th><th>Phone</th><th>Booking Date</th><th>Status</th></tr></thead>
+    <tbody>{% for p in participants %}<tr><td>{{ p.trek_name }}</td><td>{{ p.name }}</td><td>{{ p.email }}</td><td>{{ p.phone }}</td><td>{{ p.booking_date }}</td><td>{{ p.status }}</td></tr>{% else %}<tr><td colspan="6" class="text-center text-muted">No participants yet.</td></tr>{% endfor %}</tbody>
+  </table>
+</div>
+{% endblock %}

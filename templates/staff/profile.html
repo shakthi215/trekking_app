@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block sidebar %}
+<ul class="nav flex-column px-2">
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('staff_dashboard') }}"><i class="bi bi-house"></i> Dashboard</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('staff_treks') }}"><i class="bi bi-map"></i> My Treks</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('staff_participants') }}"><i class="bi bi-people"></i> Participants</a></li>
+  <li class="nav-item"><a class="nav-link active" href="{{ url_for('staff_profile') }}"><i class="bi bi-person"></i> Profile</a></li>
+</ul>
+{% endblock %}
+{% block content %}
+<h4 class="mb-3">Profile</h4>
+<div class="card p-4" style="max-width:460px">
+  <form method="POST">
+    <label class="form-label">Full Name</label><input name="name" class="form-control mb-3" value="{{ user.name }}" required>
+    <label class="form-label">Email</label><input type="email" name="email" class="form-control mb-3" value="{{ user.email }}">
+    <label class="form-label">Phone</label><input type="tel" name="phone" class="form-control mb-3" value="{{ user.phone }}" maxlength="10" pattern="[0-9]{10}" title="Enter 10 digit phone number">
+    <button class="btn btn-primary">Save</button>
+  </form>
+</div>
+{% endblock %}

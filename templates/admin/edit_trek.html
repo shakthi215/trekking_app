@@ -1,47 +1,40 @@
 {% extends "base.html" %}
 {% block sidebar %}
 <ul class="nav flex-column px-2">
-  <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_dashboard') }}"><i class="bi bi-house"></i> Dashboard</a></li>
   <li class="nav-item"><a class="nav-link active" href="{{ url_for('admin_treks') }}"><i class="bi bi-map"></i> Treks</a></li>
   <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_staff') }}"><i class="bi bi-person-badge"></i> Staff</a></li>
   <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_users') }}"><i class="bi bi-people"></i> Users</a></li>
   <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_bookings') }}"><i class="bi bi-journal-check"></i> Bookings</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_search') }}"><i class="bi bi-search"></i> Search</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_reports') }}"><i class="bi bi-file-earmark-text"></i> Reports</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_settings') }}"><i class="bi bi-gear"></i> Settings</a></li>
 </ul>
 {% endblock %}
 {% block content %}
-<h4>Edit Trek</h4>
-<div class="card p-4 mt-3" style="max-width:600px">
+<h4 class="mb-3">{{ title }}</h4>
+<div class="card p-4">
   <form method="POST">
-    <div class="mb-3"><label class="form-label">Name</label>
-      <input type="text" name="name" class="form-control" value="{{ trek.name }}" required></div>
-    <div class="mb-3"><label class="form-label">Location</label>
-      <input type="text" name="location" class="form-control" value="{{ trek.location }}"></div>
-    <div class="mb-3"><label class="form-label">Difficulty</label>
-      <select name="difficulty" class="form-select">
-        <option {% if trek.difficulty=='Easy' %}selected{% endif %}>Easy</option>
-        <option {% if trek.difficulty=='Moderate' %}selected{% endif %}>Moderate</option>
-        <option {% if trek.difficulty=='Hard' %}selected{% endif %}>Hard</option>
-      </select></div>
     <div class="row">
-      <div class="col mb-3"><label class="form-label">Duration (days)</label>
-        <input type="number" name="duration" class="form-control" value="{{ trek.duration }}"></div>
-      <div class="col mb-3"><label class="form-label">Available Slots</label>
-        <input type="number" name="slots" class="form-control" value="{{ trek.slots }}"></div>
+      <div class="col-md-6 border-end pe-4">
+        <div class="row mb-3"><label class="col-sm-4 col-form-label">Trek Name</label><div class="col-sm-8"><input name="name" class="form-control" value="{{ trek.name if trek else '' }}" required></div></div>
+        <div class="row mb-3"><label class="col-sm-4 col-form-label">Location</label><div class="col-sm-8"><input name="location" class="form-control" value="{{ trek.location if trek else '' }}" required></div></div>
+        <div class="row mb-3"><label class="col-sm-4 col-form-label">Difficulty</label><div class="col-sm-8"><select name="difficulty" class="form-select" required><option value="">-- Select --</option>{% for d in ['Easy','Moderate','Hard'] %}<option {% if trek and trek.difficulty==d %}selected{% endif %}>{{ d }}</option>{% endfor %}</select></div></div>
+        <div class="row mb-3"><label class="col-sm-4 col-form-label">Duration (Days)</label><div class="col-sm-8"><input type="number" name="duration" min="1" class="form-control" value="{{ trek.duration if trek else '' }}" required></div></div>
+        <div class="row mb-3"><label class="col-sm-4 col-form-label">Available Slots</label><div class="col-sm-8"><input type="number" name="slots" min="0" class="form-control" value="{{ trek.slots if trek else '' }}" required></div></div>
+      </div>
+      <div class="col-md-6 ps-4">
+        <div class="row mb-3"><label class="col-sm-4 col-form-label">Start Date</label><div class="col-sm-8"><input type="date" name="start_date" class="form-control" value="{{ trek.start_date if trek else '' }}" required></div></div>
+        <div class="row mb-3"><label class="col-sm-4 col-form-label">End Date</label><div class="col-sm-8"><input type="date" name="end_date" class="form-control" value="{{ trek.end_date if trek else '' }}" required></div></div>
+        <div class="row mb-3"><label class="col-sm-4 col-form-label">Assign Staff</label><div class="col-sm-8"><select name="staff_id" class="form-select"><option value="">-- Select Staff --</option>{% for s in all_staff %}<option value="{{ s.id }}" {% if trek and trek.staff_id==s.id %}selected{% endif %}>{{ s.name }}</option>{% endfor %}</select></div></div>
+        <div class="row mb-3"><label class="col-sm-4 col-form-label">Status</label><div class="col-sm-8"><select name="status" class="form-select">{% for s in ['Pending','Approved','Open','Closed','Completed'] %}<option {% if (trek and trek.status==s) or (not trek and s=='Pending') %}selected{% endif %}>{{ s }}</option>{% endfor %}</select></div></div>
+        <div class="row mb-3"><label class="col-sm-4 col-form-label">Description</label><div class="col-sm-8"><textarea name="description" class="form-control" rows="4">{{ trek.description if trek else '' }}</textarea></div></div>
+      </div>
     </div>
-    <div class="row">
-      <div class="col mb-3"><label class="form-label">Start Date</label>
-        <input type="date" name="start_date" class="form-control" value="{{ trek.start_date }}"></div>
-      <div class="col mb-3"><label class="form-label">End Date</label>
-        <input type="date" name="end_date" class="form-control" value="{{ trek.end_date }}"></div>
+    <div class="text-end">
+      <a href="{{ url_for('admin_treks') }}" class="btn btn-outline-secondary px-4">Cancel</a>
+      <button class="btn btn-primary px-5">Save</button>
     </div>
-    <div class="mb-3"><label class="form-label">Status</label>
-      <select name="status" class="form-select">
-        {% for s in ['Pending','Approved','Open','Closed','Completed'] %}
-        <option {% if trek.status==s %}selected{% endif %}>{{ s }}</option>
-        {% endfor %}
-      </select></div>
-    <button type="submit" class="btn btn-primary">Save Changes</button>
-    <a href="{{ url_for('admin_treks') }}" class="btn btn-secondary">Cancel</a>
   </form>
 </div>
 {% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block sidebar %}
+<ul class="nav flex-column px-2">
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('user_dashboard') }}"><i class="bi bi-house"></i> Dashboard</a></li>
+  <li class="nav-item"><a class="nav-link active" href="{{ url_for('user_treks') }}"><i class="bi bi-map"></i> Browse Treks</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('user_bookings') }}"><i class="bi bi-journal-check"></i> My Bookings</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('user_history') }}"><i class="bi bi-clock-history"></i> History</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('user_profile') }}"><i class="bi bi-person"></i> Profile</a></li>
+</ul>
+{% endblock %}
+{% block content %}
+<a href="{{ url_for('user_treks') }}" class="btn btn-sm btn-link text-decoration-none mb-3"><i class="bi bi-arrow-left"></i> Back to Treks</a>
+<h4 class="text-center mb-4">{{ trek.name }}</h4>
+<div class="row g-4 align-items-start">
+  <div class="col-md-4">
+    <div class="bg-light border d-flex align-items-center justify-content-center" style="height:210px">
+      <i class="bi bi-image fs-1 text-secondary"></i>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <table class="table table-borderless w-auto">
+      <tr><th>Location</th><td>{{ trek.location }}</td></tr>
+      <tr><th>Difficulty</th><td>{{ trek.difficulty }}</td></tr>
+      <tr><th>Duration</th><td>{{ trek.duration }} days</td></tr>
+      <tr><th>Start Date</th><td>{{ trek.start_date }}</td></tr>
+      <tr><th>End Date</th><td>{{ trek.end_date }}</td></tr>
+      <tr><th>Available Slots</th><td>{{ trek.slots }}</td></tr>
+    </table>
+  </div>
+</div>
+<h6 class="mt-3">Description</h6>
+<p class="text-muted">{{ trek.description or ('A guided trek at ' ~ trek.location ~ ' with ' ~ trek.difficulty|lower ~ ' difficulty and a duration of ' ~ trek.duration ~ ' days.') }}</p>
+{% if trek.status == 'Open' and trek.slots > 0 %}
+<form method="POST" action="{{ url_for('user_book', tid=trek.id) }}" class="text-end"><button class="btn btn-primary px-5">Book Now</button></form>
+{% else %}
+<div class="text-end"><span class="badge bg-secondary">{{ trek.status }}</span></div>
+{% endif %}
+{% endblock %}
